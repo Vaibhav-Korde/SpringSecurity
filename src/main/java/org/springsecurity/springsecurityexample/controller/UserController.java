@@ -2,6 +2,7 @@ package org.springsecurity.springsecurityexample.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springsecurity.springsecurityexample.entities.User;
 import org.springsecurity.springsecurityexample.service.UserService;
 
@@ -12,23 +13,27 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserService service;
 
-    // all user
+
+//    @GetMapping("/")
+//    public String home() {
+//        return "home";
+//    }
+
     @GetMapping("/")
-    public List<User> getAllUser(){
-        return this.userService.getUserList();
+    public List<User> getAllUser() {
+        List<User>list=service.getAllUser();
+//		ModelAndView m=new ModelAndView();
+//		m.setViewName("bookList");
+//		m.addObject("book",list);
+        return list;
     }
 
-    // Single user
-
-    @GetMapping("/{userName}")
-    public User getUser( @PathVariable("userName") String userName){
-         return this.userService.getUser(userName);
+    @PostMapping("/save")
+    public String addBook(@ModelAttribute User user) {
+        service.save(user);
+        return "THIS IS USER";
     }
 
-    @PostMapping("/")
-    public User add(@RequestBody User user){
-        return this.userService.addUser(user);
-    }
 }
